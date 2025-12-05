@@ -2,8 +2,6 @@
 
 A data-driven analysis of Max Verstappen's strategic decisions and "ghost race" scenarios.
 
-Student: Adam
-
 Project Status: Complete
 
 📖 Overview
