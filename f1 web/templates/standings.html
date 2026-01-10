@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- 1. DEFINE COLORS HERE (Cleans up the HTML below) -->
+{% set team_colors = {
+    'McLaren': '#FF8700',
+    'Ferrari': '#FF1801',
+    'Red Bull': '#3671C6',
+    'Mercedes': '#00D2BE',
+    'Williams': '#005AFF',
+    'Aston Martin': '#006F62',
+    'Alpine': '#0090FF',
+    'Haas': '#B6BABD',
+    'Sauber': '#52E252'
+} %}
+
+<h1>🏆 2025 Championship Standings</h1>
+<div class="card" style="padding: 0; overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead style="background: #252932; color: #aaa;">
+            <tr>
+                <th style="padding: 15px;">Pos</th>
+                <th>Driver</th>
+                <th>Team</th>
+                <th>Wins</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in standings %}
+            <tr style="border-bottom: 1px solid #333;">
+                <td style="padding: 15px; font-weight: bold;">{{ row.pos }}</td>
+                
+                <!-- 2. USE THE CLEAN VARIABLE HERE -->
+                <!-- The .get() function finds the team color, or defaults to white -->
+            <!-- We generate the class name: "Red Bull" becomes "text-red-bull" -->
+            <td style="font-weight: bold;" 
+            class="text-{{ row.team | lower | replace(' ', '-') | default('default') }}">
+                    {{ row.driver }}
+                    </td>
+                    {{ row.driver }}
+                </td>
+
+                <td class="text-muted">{{ row.team }}</td>
+                <td>{{ row.wins }}</td>
+                <td style="font-weight: bold; font-size: 1.1rem;">{{ row.points }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; gap: 30px; position: relative;">
+    
+    <!-- LEFT SIDE: ODDS -->
+    <div style="flex: 3;">
+        <div class="header-flex" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h1>🇧🇷 Sao Paulo GP Odds</h1>
+            <span class="badge badge-brazil">Live Market</span>
+        </div>
+
+        <h2>🏆 Race Winner</h2>
+        <div class="grid">
+            {% for driver in drivers %}
+            <div class="card">
+                <h3>{{ driver.name }}</h3>
+                <p class="text-muted text-sm">{{ driver.team }}</p>
+                <button class="odds-btn" onclick="addToSlip('{{ driver.name }}', {{ driver.odds_win }}, 'Race Winner')">
+                    Win {{ driver.odds_win }}
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2 style="margin-top: 40px;">⚔️ Head-to-Head</h2>
+        {% for m in matchups %}
+        <div class="matchup-row">
+            <strong>{{ m.p1 }}</strong>
+            <button class="odds-btn" style="width:auto;" onclick="addToSlip('{{ m.p1 }} vs {{ m.p2 }}', {{ m.odds1 }}, 'Head to Head')">{{ m.odds1 }}</button>
+            <span class="vs">VS</span>
+            <button class="odds-btn" style="width:auto;" onclick="addToSlip('{{ m.p2 }} vs {{ m.p1 }}', {{ m.odds2 }}, 'Head to Head')">{{ m.odds2 }}</button>
+            <strong>{{ m.p2 }}</strong>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- RIGHT SIDE: BETTING SLIP (STICKY) -->
+    <div style="flex: 1;">
+        <div class="bet-slip" id="betSlip">
+            <h3 style="border-bottom:1px solid #444; padding-bottom:10px;">Bet Slip</h3>
+            <div id="slip-empty" style="text-align:center; padding:20px; color:#666;">
+                Your slip is empty. <br> Click odds to add selections.
+            </div>
+            <div id="slip-content" style="display:none;">
+                <div id="slip-items"></div> <!-- Items go here -->
+                
+                <div style="margin-top:20px; border-top:1px solid #444; padding-top:10px;">
+                    <label style="font-size:0.8rem;">Stake ($)</label>
+                    <input type="number" id="bet-stake" value="10" min="1" style="width:100%; padding:8px; background:#222; border:1px solid #444; color:white; border-radius:4px; margin-bottom:10px;">
+                    
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>Est. Return:</span>
+                        <span id="est-return" style="color:var(--accent-green); font-weight:bold;">$0.00</span>
+                    </div>
+                    
+                    <button onclick="placeBet()" style="width:100%; margin-top:10px; padding:12px; background:var(--accent-green); border:none; border-radius:4px; font-weight:bold; cursor:pointer;">
+                        PLACE BET
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let currentBet = null;
+
+    function addToSlip(selection, odds, market) {
+        currentBet = { selection, odds, market };
+        
+        // UI Updates
+        document.getElementById('slip-empty').style.display = 'none';
+        document.getElementById('slip-content').style.display = 'block';
+        
+        const html = `
+            <div style="background:#252932; padding:10px; border-radius:4px; margin-bottom:10px; border:1px solid #444;">
+                <div style="font-size:0.8rem; color:#aaa;">${market}</div>
+                <div style="font-weight:bold; color:white;">${selection}</div>
+                <div style="color:var(--accent-green);">Odds: ${odds}</div>
+            </div>
+        `;
+        document.getElementById('slip-items').innerHTML = html;
+        updateReturn();
+    }
+
+    const stakeInput = document.getElementById('bet-stake');
+    stakeInput.addEventListener('input', updateReturn);
+
+    function updateReturn() {
+        if(!currentBet) return;
+        const stake = parseFloat(stakeInput.value) || 0;
+        const potential = (stake * currentBet.odds).toFixed(2);
+        document.getElementById('est-return').innerText = '$' + potential;
+    }
+
+    function placeBet() {
+        const stake = parseFloat(stakeInput.value);
+        let balance = parseFloat(localStorage.getItem('f1_balance'));
+
+        if (stake > balance) {
+            alert("Insufficient funds!");
+            return;
+        }
+
+        // Deduct money
+        balance -= stake;
+        localStorage.setItem('f1_balance', balance);
+        updateNavBalance(); // From base.html
+
+        // Simulate a result (Random Win/Loss for demo)
+        const isWin = Math.random() > 0.5; // 50/50 chance for demo
+        
+        alert(`Bet Placed on ${currentBet.selection}!\n\nSimulating Race Result...`);
+
+        setTimeout(() => {
+            if(isWin) {
+                const winnings = stake * currentBet.odds;
+                balance += winnings;
+                localStorage.setItem('f1_balance', balance);
+                alert(`🎉 YOU WON! ${currentBet.selection} finished P1.\nAdded $${winnings.toFixed(2)} to wallet.`);
+            } else {
+                alert(`❌ YOU LOST. ${currentBet.selection} DNF or finished behind.`);
+            }
+            updateNavBalance();
+            location.reload(); // Refresh page
+        }, 1500);
+    }
+</script>
+{% endblock %}

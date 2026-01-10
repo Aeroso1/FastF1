@@ -1,0 +1,40 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastF1 2025</title>
+    <!-- THIS IS THE MAGIC LINE: -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">FAST<span>F1</span></div>
+        <div style="flex: 1; margin-left: 40px;">
+            <a href="/">Schedule</a>
+            <a href="/standings">Standings</a>
+            <a href="/bets">Betting</a>
+        </div>
+        <div class="wallet-display">
+            <i class="fas fa-wallet" style="color: var(--accent-green);"></i>
+            <span id="nav-balance">$1000.00</span>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- GLOBAL JAVASCRIPT FOR WALLET -->
+    <script>
+        // Check if balance exists in browser, if not set to 1000
+        if (!localStorage.getItem('f1_balance')) {
+            localStorage.setItem('f1_balance', 1000.00);
+        }
+        
+        function updateNavBalance() {
+            const bal = parseFloat(localStorage.getItem('f1_balance'));
+            document.getElementById('nav-balance').innerText = '$' + bal.toFixed(2);
+        }
+        updateNavBalance();
+    </script>
+</body>
+</html>

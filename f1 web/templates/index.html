@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="background: linear-gradient(145deg, #0a3d1b, #000); border: 1px solid #009c3b; margin-bottom: 40px; text-align: center; padding: 40px;">
+    <span class="badge badge-brazil">RACE WEEK SIMULATION</span>
+    <h1 style="margin: 15px 0;">{{ next_race.EventName }}</h1>
+    <p style="font-size: 1.2rem; color: #ccc;">{{ next_race.Location }}</p>
+    <div style="margin-top: 20px; font-family: monospace; color: var(--accent-brazil);">
+        CURRENT SIMULATED DATE: {{ now.strftime('%A, %B %d, %Y') }}
+    </div>
+    <a href="/bets" class="odds-btn" style="display: inline-block; width: auto; margin-top: 20px; padding: 12px 30px; background: white; color: black;">
+        View Race Odds &rarr;
+    </a>
+</div>
+
+<h2>Upcoming 2025 Races</h2>
+<div class="grid">
+    {% for race in future_races %}
+    <div class="card {{ 'race-next' if loop.first else 'race-future' }}">
+        <div class="bet-header">
+            <span class="badge">Round {{ race.RoundNumber }}</span>
+            <span style="color: #fff;">{{ race.EventDate.strftime('%d %b') }}</span>
+        </div>
+        <h3 style="margin: 0;">{{ race.EventName }}</h3>
+        <p class="team-name">{{ race.Location }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<h2>Completed 2025 Season</h2>
+<div class="grid">
+    {% for race in past_races|reverse %}
+    <div class="card" style="border-left: 3px solid #333;">
+        <div class="bet-header">
+            <span style="color: #555;">Round {{ race.RoundNumber }}</span>
+            <span style="color: #555; text-decoration: line-through;">{{ race.EventDate.strftime('%d %b') }}</span>
+        </div>
+        <h3 style="margin: 0; color: #777;">{{ race.EventName }}</h3>
+        <p class="team-name" style="color: #444;">{{ race.Location }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

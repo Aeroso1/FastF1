@@ -1,0 +1,199 @@
+/* static/style.css - COMPLETE VERSION */
+
+/* 1. RESET & FONTS */
+:root {
+    --bg-dark: #0f1115;      /* Deep dark background */
+    --bg-panel: #181b21;     /* Slightly lighter for cards */
+    --text-primary: #ffffff;
+    --text-secondary: #a0a5b0;
+    --accent-red: #e10600;   /* F1 Red */
+    --accent-green: #00d26a; /* Brazil Green */
+    --border-color: #2a2e35;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* 2. NAVIGATION */
+nav {
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 900; 
+    font-style: italic; 
+    letter-spacing: -1px; 
+    color: white;
+}
+.logo span { color: var(--accent-red); }
+
+nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-left: 2rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+nav a:hover { color: white; }
+
+/* 3. LAYOUT */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1, h2, h3 { margin-top: 0; color: white; }
+h2 {
+    border-left: 4px solid var(--accent-red);
+    padding-left: 15px;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+/* 4. CARDS & GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #444;
+}
+
+/* 5. BADGES & BUTTONS */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: #333;
+    color: #ccc;
+    margin-bottom: 0.5rem;
+}
+
+.badge-brazil {
+    background-color: var(--accent-green);
+    color: #000;
+}
+
+.odds-btn {
+    background: #252932;
+    color: white;
+    border: 1px solid #333;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.2s;
+    width: 100%;
+    text-align: center;
+}
+
+.odds-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* 6. UTILITIES */
+.text-muted { color: var(--text-secondary); }
+.text-sm { font-size: 0.85rem; }
+
+.matchup-row {
+    background: var(--bg-panel);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.vs {
+    font-style: italic;
+    font-weight: 900;
+    color: var(--text-secondary);
+    padding: 0 1rem;
+}
+
+.race-next { opacity: 1; border-left: 4px solid var(--accent-green); }
+.race-future { opacity: 0.5; }
+
+/* 7. WALLET & BET SLIP (V3 UPDATE) */
+.bet-slip {
+    background: #16181e;
+    border: 1px solid var(--accent-green);
+    border-radius: 8px;
+    padding: 20px;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.wallet-display {
+    background: #222;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #444;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: white;
+}
+
+/* 8. TEAM COLORS (For Standings Page) */
+table { width: 100%; border-collapse: collapse; }
+td, th { padding: 12px 15px; }
+tr:nth-child(even) { background-color: #1f2229; }
+
+.text-mclaren { color: #FF8700; }
+.text-ferrari { color: #FF1801; }
+.text-red-bull { color: #3671C6; }
+.text-mercedes { color: #00D2BE; }
+.text-williams { color: #005AFF; }
+.text-aston-martin { color: #006F62; }
+.text-alpine { color: #0090FF; }
+.text-haas { color: #B6BABD; }
+.text-sauber { color: #52E252; }
+.text-default { color: white; }
